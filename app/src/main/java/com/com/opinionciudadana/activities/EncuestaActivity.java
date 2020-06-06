@@ -1,6 +1,7 @@
 package com.com.opinionciudadana.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +37,7 @@ public class EncuestaActivity extends DefaultActivity {
     private Button no;
     private String key;
     private Pie pie;
-
+    private boolean usuarioHabilitado;
 
 
     @Override
@@ -45,6 +46,7 @@ public class EncuestaActivity extends DefaultActivity {
 
         key = getIntent().getStringExtra("key");
         Log.i("debug", "Recibiendo la encuesta" + key);
+        this.usuarioHabilitado = false;
         getEncuesta();
     }
 
@@ -64,9 +66,6 @@ public class EncuestaActivity extends DefaultActivity {
 
     }
 
-    public Boolean validarEncuesta() {
-        return false;
-    }
 
     public void getEncuesta() {
         firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
@@ -83,16 +82,37 @@ public class EncuestaActivity extends DefaultActivity {
                 Button no = findViewById(R.id.no);
                 no.setText(miEncuesta.getPreguntas().get(1).toString());
                 no.setEnabled(false);
-
+                Log.i("debug", "id de encuest: " + key);
                 validarUsuario(key);
             } else {
             }
         });
     }
 
+    public boolean verificar() {
+        if(this.usuarioHabilitado) {
+            return true;
+        }
 
+        new AlertDialog.Builder(EncuestaActivity.this)
+                .setTitle("Ups")
+                .setMessage("Ya usted contestó esta encuesta")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finish();
+                    }
+                }).show();
+
+        return false;
+    }
 
     public void sendYes(View view) {
+        if(!this.verificar()) {
+            return;
+        }
         firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
@@ -110,6 +130,9 @@ public class EncuestaActivity extends DefaultActivity {
     }
 
     public void sendNo(View view) {
+        if(!this.verificar()) {
+            return;
+        }
         firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
@@ -127,38 +150,36 @@ public class EncuestaActivity extends DefaultActivity {
     }
 
     public void validarUsuario(String encuestaId) {
+        this.usuarioHabilitado = false;
         firestoreManager.getDocument("users", authManager.getUser().getId(), task -> {
             if(!task.isSuccessful()) {
+                Log.i("debug", "la validación fallo");
                 return;
             }
             DocumentSnapshot _respuesta = task.getResult();
             Respuesta respuesta = _respuesta.toObject(Respuesta.class);
 
             if(respuesta == null || respuesta.getEncuestas() == null) {
-                Button si = findViewById(R.id.si);
-                si.setEnabled(true);
-
-                Button no = findViewById(R.id.no);
-                no.setEnabled(true);
-
+                Log.i("debug", "la validación llega nula x2");
+                this.usuarioHabilitado = true;
+                findViewById(R.id.si).setEnabled(true);
+                findViewById(R.id.no).setEnabled(true);
                 return;
             }
 
             boolean activar = true;
             for (String res : respuesta.getEncuestas()) {
-                if(res == encuestaId) {
+                Log.i("debug", res);
+                Log.i("debug", encuestaId);
+                if(res.equals(encuestaId)) {
+                    Log.i("debug", "lo anulé");
                     activar = false;
                 }
             }
 
-            if(activar) {
-                Button si = findViewById(R.id.si);
-                si.setEnabled(true);
-
-                Button no = findViewById(R.id.no);
-                no.setEnabled(true);
-            }
-
+            this.usuarioHabilitado = activar;
+            findViewById(R.id.si).setEnabled(activar);
+            findViewById(R.id.no).setEnabled(activar);
 
         });
     }
@@ -189,9 +210,18 @@ public class EncuestaActivity extends DefaultActivity {
             });
         });
         validarUsuario(key);
+
         new AlertDialog.Builder(EncuestaActivity.this)
-                .setTitle("Muchas gracias")
-                .setMessage("Su respuesta ha sido guardada con éxito").show();
+                .setTitle("Muchas gracias!!")
+                .setMessage("Su respuesta fue guardada satisfactoriamente")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        finish();
+                    }
+                }).show();
     }
 
 
