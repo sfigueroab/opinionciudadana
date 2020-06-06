@@ -55,6 +55,7 @@ public class ExampleFragment extends DefaultFragment {
         yes.setOnClickListener(view -> sendYes(view));
         no = root.findViewById(R.id.no);
         no.setOnClickListener(view -> sendNo(view));
+
     }
 
     public void loadExampleTexts() {
@@ -90,10 +91,10 @@ public class ExampleFragment extends DefaultFragment {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
-                int respuestasActuales = miEncuesta.getRespuestas().get(0);
+                int respuestasActuales = miEncuesta.getResultados().get(0);
                 respuestasActuales++;
-                miEncuesta.getRespuestas().set(0, respuestasActuales);
-                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getRespuestas(), task -> {
+                miEncuesta.getResultados().set(0, respuestasActuales);
+                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
@@ -109,10 +110,10 @@ public class ExampleFragment extends DefaultFragment {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
-                int respuestasActuales = miEncuesta.getRespuestas().get(1);
+                int respuestasActuales = miEncuesta.getResultados().get(1);
                 respuestasActuales++;
-                miEncuesta.getRespuestas().set(1, respuestasActuales);
-                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getRespuestas(), task -> {
+                miEncuesta.getResultados().set(1, respuestasActuales);
+                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
@@ -134,12 +135,12 @@ public class ExampleFragment extends DefaultFragment {
         });
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(0), encuesta.getRespuestas().get(0)));
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(1), encuesta.getRespuestas().get(1)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
 
         pie.data(data);
 
-        pie.title(encuesta.getEjemplo());
+        pie.title(encuesta.getPregunta());
 
         pie.labels().position("outside");
 
@@ -157,8 +158,8 @@ public class ExampleFragment extends DefaultFragment {
 
     public void addData(Encuesta encuesta) {
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(0), encuesta.getRespuestas().get(0)));
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(1), encuesta.getRespuestas().get(1)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
         pie.data(data);
     }
 }

@@ -5,37 +5,37 @@ import com.google.firebase.firestore.PropertyName;
 import java.util.List;
 
 public class Encuesta {
-    private List<String> opciones;
-    private List<Integer> respuestas;
-    private String ejemplo;
+    private List<String> preguntas;
+    private List<Integer> resultados;
+    private String pregunta;
 
-    @PropertyName("opciones")
-    public List<String> getOpciones() {
-        return opciones;
+    @PropertyName("preguntas")
+    public List<String> getPreguntas() {
+        return preguntas;
     }
 
-    @PropertyName("opciones")
-    public void setOpciones(List<String> opciones) {
-        this.opciones = opciones;
+    @PropertyName("preguntas")
+    public void setPreguntas(List<String> preguntas) {
+        this.preguntas = preguntas;
     }
 
-    @PropertyName("respuestas")
-    public List<Integer> getRespuestas() {
-        return respuestas;
+    @PropertyName("resultados")
+    public List<Integer> getResultados() {
+        return resultados;
     }
 
-    @PropertyName("respuestas")
-    public void setRespuestas(List<Integer> respuestas) {
-        this.respuestas = respuestas;
+    @PropertyName("resultados")
+    public void setResultados(List<Integer> resultados) {
+        this.resultados = resultados;
     }
 
-    @PropertyName("titulo")
-    public String getEjemplo() {
-        return ejemplo;
+    @PropertyName("pregunta")
+    public String getPregunta() {
+        return pregunta;
     }
 
-    @PropertyName("titulo")
-    public void setEjemplo(String ejemplo) {
-        this.ejemplo = ejemplo;
+    @PropertyName("pregunta")
+    public void setPregunta(String pregunta) {
+        this.pregunta = pregunta;
     }
 }

@@ -2,6 +2,7 @@ package com.com.opinionciudadana.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 
 public class ListFragment extends DefaultFragment {
     private List<String> keys;
@@ -50,7 +52,12 @@ public class ListFragment extends DefaultFragment {
                     DocumentSnapshot encuestaSnap = encuestas.get(i);
                     keys.add(i, encuestaSnap.getId());
                     Encuesta encuesta = encuestaSnap.toObject(Encuesta.class);
-                    titulos.add(i, encuesta.getEjemplo());
+                    titulos.add(i, encuesta.getPregunta());
+                    Log.i("Debug", encuesta.getPregunta().toString());
+
+                    Gson gson = new Gson();
+                    String string = gson.toJson(encuesta);
+                    Log.i("Debug", string);
                 }
                 final EncuestasAdapter encuestasAdapter = new EncuestasAdapter(titulos);
                 encuestasAdapter.setOnClickListener(v -> goToEncuestaPage(keys.get(lista.getChildAdapterPosition(v))));

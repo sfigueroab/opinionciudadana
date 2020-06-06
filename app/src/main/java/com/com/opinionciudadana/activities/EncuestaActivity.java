@@ -70,10 +70,10 @@ public class EncuestaActivity extends DefaultActivity {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
-                int respuestasActuales = miEncuesta.getRespuestas().get(0);
+                int respuestasActuales = miEncuesta.getResultados().get(0);
                 respuestasActuales++;
-                miEncuesta.getRespuestas().set(0, respuestasActuales);
-                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getRespuestas(), task -> {
+                miEncuesta.getResultados().set(0, respuestasActuales);
+                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
@@ -86,10 +86,10 @@ public class EncuestaActivity extends DefaultActivity {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
-                int respuestasActuales = miEncuesta.getRespuestas().get(1);
+                int respuestasActuales = miEncuesta.getResultados().get(1);
                 respuestasActuales++;
-                miEncuesta.getRespuestas().set(1, respuestasActuales);
-                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getRespuestas(), task -> {
+                miEncuesta.getResultados().set(1, respuestasActuales);
+                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
@@ -108,12 +108,12 @@ public class EncuestaActivity extends DefaultActivity {
         });
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(0), encuesta.getRespuestas().get(0)));
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(1), encuesta.getRespuestas().get(1)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
 
         pie.data(data);
 
-        pie.title(encuesta.getEjemplo());
+        pie.title(encuesta.getPregunta());
 
         pie.labels().position("outside");
 
@@ -131,8 +131,8 @@ public class EncuestaActivity extends DefaultActivity {
 
     public void addData(Encuesta encuesta) {
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(0), encuesta.getRespuestas().get(0)));
-        data.add(new ValueDataEntry(encuesta.getOpciones().get(1), encuesta.getRespuestas().get(1)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
         pie.data(data);
     }
 }
