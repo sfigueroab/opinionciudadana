@@ -14,17 +14,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.com.opinionciudadana.R;
 import com.com.opinionciudadana.activities.EncuestaActivity;
 import com.com.opinionciudadana.adapters.EncuestasAdapter;
+import com.com.opinionciudadana.managers.FirebaseAuthManager;
 import com.com.opinionciudadana.model.Encuesta;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 
 public class ListFragment extends DefaultFragment {
+
     private List<String> keys;
     private List<String> titulos;
     private RecyclerView lista;
+    private String userId;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
@@ -42,6 +48,7 @@ public class ListFragment extends DefaultFragment {
         lista = root.findViewById(R.id.encuestas_list);
     }
 
+
     public void getEncuestas() {
         firestoreManager.getCollection("encuestas", queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
@@ -53,11 +60,11 @@ public class ListFragment extends DefaultFragment {
                     keys.add(i, encuestaSnap.getId());
                     Encuesta encuesta = encuestaSnap.toObject(Encuesta.class);
                     titulos.add(i, encuesta.getPregunta());
-                    Log.i("Debug", encuesta.getPregunta().toString());
+
 
                     Gson gson = new Gson();
                     String string = gson.toJson(encuesta);
-                    Log.i("Debug", string);
+
                 }
                 final EncuestasAdapter encuestasAdapter = new EncuestasAdapter(titulos);
                 encuestasAdapter.setOnClickListener(v -> goToEncuestaPage(keys.get(lista.getChildAdapterPosition(v))));
@@ -65,7 +72,7 @@ public class ListFragment extends DefaultFragment {
                 lista.setAdapter(encuestasAdapter);
                 lista.setLayoutManager(new LinearLayoutManager(thisFragment.getActivity(), LinearLayoutManager.VERTICAL, false));
                 lista.invalidate();
-            } else { 
+            } else {
             }
         });
     }
@@ -73,6 +80,7 @@ public class ListFragment extends DefaultFragment {
     public void goToEncuestaPage(String key){
         Intent intent = new Intent(thisFragment.getActivity(), EncuestaActivity.class);
         intent.putExtra("key", key);
+        Log.i("debug", "Enviando la encuesta" + key);
         startActivity(intent);
     }
 }

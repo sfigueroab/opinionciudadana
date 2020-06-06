@@ -4,13 +4,24 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+
 import com.com.opinionciudadana.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateAccountActivity extends DefaultActivity {
     private EditText email;
@@ -50,9 +61,11 @@ public class CreateAccountActivity extends DefaultActivity {
             if(!task.isSuccessful()) {
                 Snackbar.make(view, R.string.create_error, Snackbar.LENGTH_LONG).show();
             } else {
+
                 authManager.sendEmailVerification(thisActivity, value -> {
                     if(value.isSuccessful()) {
                         Snackbar.make(view, R.string.create_email_notification, Snackbar.LENGTH_LONG).show();
+
                     } else {
                         Snackbar.make(view, R.string.create_email_fail, Snackbar.LENGTH_LONG).show();
                     }
@@ -65,9 +78,9 @@ public class CreateAccountActivity extends DefaultActivity {
 
     public boolean validate(View view) {
         boolean valid = true;
-        String emailText = email.getText().toString();
-        String passwordText = password.getText().toString();
-        String confirmText = confirm.getText().toString();
+        String emailText =      email.getText().toString();
+        String passwordText =   password.getText().toString();
+        String confirmText =    confirm.getText().toString();
         if(emailText.isEmpty()) {
             valid = false;
             email.setError(getString(R.string.create_error_no_email));
@@ -84,6 +97,7 @@ public class CreateAccountActivity extends DefaultActivity {
             valid = false;
             Snackbar.make(view, R.string.create_error_mismatch, Snackbar.LENGTH_LONG).show();
         }
+
         return valid;
     }
 

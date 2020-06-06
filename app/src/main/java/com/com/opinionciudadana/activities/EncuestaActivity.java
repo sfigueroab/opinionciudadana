@@ -1,25 +1,19 @@
 package com.com.opinionciudadana.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.chart.common.listener.Event;
-import com.anychart.chart.common.listener.ListenersInterface;
 import com.anychart.charts.Pie;
-import com.anychart.enums.Align;
-import com.anychart.enums.LegendLayout;
 import com.com.opinionciudadana.R;
 import com.com.opinionciudadana.model.Encuesta;
+import com.com.opinionciudadana.model.Respuesta;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EncuestaActivity extends DefaultActivity {
 
@@ -35,7 +29,7 @@ public class EncuestaActivity extends DefaultActivity {
         super.onCreate(savedInstanceState);
 
         key = getIntent().getStringExtra("key");
-
+        Log.i("debug", "Recibiendo la encuesta" + key);
         getEncuesta();
     }
 
@@ -47,11 +41,16 @@ public class EncuestaActivity extends DefaultActivity {
     @Override
     public void createViews() {
         super.createViews();
-        chart = findViewById(R.id.any_chart_view);
+        // chart = findViewById(R.id.any_chart_view);
         yes = findViewById(R.id.si);
         yes.setOnClickListener(view -> sendYes(view));
         no = findViewById(R.id.no);
         no.setOnClickListener(view -> sendNo(view));
+
+    }
+
+    public Boolean validarEncuesta() {
+        return false;
     }
 
     public void getEncuesta() {
@@ -59,11 +58,15 @@ public class EncuestaActivity extends DefaultActivity {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
-                createChart(miEncuesta);
+                // createChart(miEncuesta);
+                TextView tituloTextView = findViewById(R.id.textView8);
+                tituloTextView.setText(miEncuesta.getPregunta().toString());
             } else {
             }
         });
     }
+
+
 
     public void sendYes(View view) {
         firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
@@ -73,9 +76,11 @@ public class EncuestaActivity extends DefaultActivity {
                 int respuestasActuales = miEncuesta.getResultados().get(0);
                 respuestasActuales++;
                 miEncuesta.getResultados().set(0, respuestasActuales);
-                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getResultados(), task -> {
+                firestoreManager.setField("encuestas", key, "resultados", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
-                    chart.refreshDrawableState();
+                   // chart.refreshDrawableState();
+                    this.setRespuesta(key);
+
                 });
             }
         });
@@ -89,16 +94,46 @@ public class EncuestaActivity extends DefaultActivity {
                 int respuestasActuales = miEncuesta.getResultados().get(1);
                 respuestasActuales++;
                 miEncuesta.getResultados().set(1, respuestasActuales);
-                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getResultados(), task -> {
+                firestoreManager.setField("encuestas", key, "resultados", miEncuesta.getResultados(), task -> {
                     addData(miEncuesta);
-                    chart.refreshDrawableState();
+                   // chart.refreshDrawableState();
+                    this.setRespuesta(key);
                 });
             }
         });
     }
 
+
+    public void setRespuesta(String key) {
+        firestoreManager.getDocument("users", authManager.getUser().getId(), task1 -> {
+            if(!task1.isSuccessful()) {
+                Log.i("debug", "esta nula");
+                return;
+            }
+
+            DocumentSnapshot document = task1.getResult();
+            Respuesta respuesta = document.toObject(Respuesta.class);
+            if(respuesta == null) {
+                Log.i("debug", "respuesta nula");
+                respuesta = new Respuesta();
+            }
+
+            if(respuesta.getEncuestas() == null) {
+                Log.i("debug", "nulo nulo");
+                respuesta.setEncuestas(new ArrayList<>());
+            }
+
+            respuesta.getEncuestas().add(key);
+            Log.i("debug", "agregamos el key " + key);
+            firestoreManager.saveObject("users", authManager.getUser().getId(), respuesta, task2 -> {
+                Log.i("debug", "llegue");
+            });
+        });
+    }
+
+
     public void createChart(Encuesta encuesta) {
-        pie = AnyChart.pie();
+     /*   pie = AnyChart.pie();
 
         pie.setOnClickListener(new ListenersInterface.OnClickListener(new String[]{"x", "value"}) {
             @Override
@@ -108,8 +143,8 @@ public class EncuestaActivity extends DefaultActivity {
         });
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
-        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
+        data.add(new ValueDataEntry(encuesta.getEncuestas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getEncuestas().get(1), encuesta.getResultados().get(1)));
 
         pie.data(data);
 
@@ -127,12 +162,15 @@ public class EncuestaActivity extends DefaultActivity {
                 .itemsLayout(LegendLayout.HORIZONTAL)
                 .align(Align.CENTER);
         chart.setChart(pie);
+        */
+
     }
 
     public void addData(Encuesta encuesta) {
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry(encuesta.getPreguntas().get(0), encuesta.getResultados().get(0)));
-        data.add(new ValueDataEntry(encuesta.getPreguntas().get(1), encuesta.getResultados().get(1)));
+        /* List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry(encuesta.getEncuestas().get(0), encuesta.getResultados().get(0)));
+        data.add(new ValueDataEntry(encuesta.getEncuestas().get(1), encuesta.getResultados().get(1)));
         pie.data(data);
+         */
     }
 }
