@@ -33,7 +33,6 @@ public class ExampleFragment extends DefaultFragment {
     private AnyChartView chart;
     private Button yes;
     private Button no;
-
     private Pie pie;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
