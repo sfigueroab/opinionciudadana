@@ -1,11 +1,11 @@
-package com.com.ejemplo.activities;
+package com.com.opinionciudadana.activities;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.com.ejemplo.R;
+import com.com.opinionciudadana.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class RecoverPasswordActivity extends DefaultActivity {

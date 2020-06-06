@@ -1,4 +1,4 @@
-package com.com.ejemplo;
+package com.com.opinionciudadana;
 
 import org.junit.Test;
 

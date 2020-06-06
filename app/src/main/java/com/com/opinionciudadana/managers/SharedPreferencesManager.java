@@ -1,4 +1,4 @@
-package com.com.ejemplo.managers;
+package com.com.opinionciudadana.managers;
 
 import android.content.Context;
 import android.content.ContextWrapper;

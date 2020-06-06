@@ -1,4 +1,4 @@
-package com.com.ejemplo.model;
+package com.com.opinionciudadana.model;
 
 public class User {
     private String id;

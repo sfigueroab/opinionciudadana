@@ -1,4 +1,4 @@
-package com.com.ejemplo.fragments;
+package com.com.opinionciudadana.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +10,10 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.com.ejemplo.R;
-import com.com.ejemplo.managers.FirebaseAuthManager;
-import com.com.ejemplo.managers.FirestoreManager;
-import com.com.ejemplo.managers.SharedPreferencesManager;
+import com.com.opinionciudadana.R;
+import com.com.opinionciudadana.managers.FirebaseAuthManager;
+import com.com.opinionciudadana.managers.FirestoreManager;
+import com.com.opinionciudadana.managers.SharedPreferencesManager;
 
 public abstract class DefaultFragment extends Fragment {
     protected DefaultFragment thisFragment;

@@ -1,4 +1,4 @@
-package com.com.ejemplo.activities;
+package com.com.opinionciudadana.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,10 +7,10 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.com.ejemplo.R;
-import com.com.ejemplo.managers.FirebaseAuthManager;
-import com.com.ejemplo.managers.FirestoreManager;
-import com.com.ejemplo.managers.SharedPreferencesManager;
+import com.com.opinionciudadana.R;
+import com.com.opinionciudadana.managers.FirebaseAuthManager;
+import com.com.opinionciudadana.managers.FirestoreManager;
+import com.com.opinionciudadana.managers.SharedPreferencesManager;
 
 public abstract class DefaultActivity extends AppCompatActivity {
     protected DefaultActivity thisActivity;

@@ -1,4 +1,4 @@
-package com.com.ejemplo.activities;
+package com.com.opinionciudadana.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.com.ejemplo.R;
+import com.com.opinionciudadana.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends DefaultActivity {

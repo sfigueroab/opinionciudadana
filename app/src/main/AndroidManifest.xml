@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.com.ejemplo">
+    package="com.com.opinionciudadana">
 
     <application
         android:allowBackup="true"
@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.com.ejemplo.activities.EncuestaActivity"></activity>
+        <activity android:name="com.com.opinionciudadana.activities.EncuestaActivity"></activity>
         <activity
-            android:name="com.com.ejemplo.activities.MainActivity"
+            android:name="com.com.opinionciudadana.activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.com.ejemplo.activities.RecoverPasswordActivity" />
-        <activity android:name="com.com.ejemplo.activities.CreateAccountActivity" />
-        <activity android:name="com.com.ejemplo.activities.LoginActivity" />
+        <activity android:name="com.com.opinionciudadana.activities.RecoverPasswordActivity" />
+        <activity android:name="com.com.opinionciudadana.activities.CreateAccountActivity" />
+        <activity android:name="com.com.opinionciudadana.activities.LoginActivity" />
         <activity
-            android:name="com.com.ejemplo.activities.SplashActivity"
+            android:name="com.com.opinionciudadana.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Splash">
             <intent-filter>
