@@ -82,7 +82,7 @@ public class EncuestaActivity extends DefaultActivity {
 
                 Button no = findViewById(R.id.no);
                 no.setText(miEncuesta.getPreguntas().get(1).toString());
-                //no.setEnabled(false);
+                //no.setEnabled(false); lo comente
                 no.setVisibility(View.INVISIBLE);
 
                 Log.i("debug", "id de encuest: " + key);
