@@ -65,7 +65,7 @@ public class ListFragment extends DefaultFragment {
                 lista.setAdapter(encuestasAdapter);
                 lista.setLayoutManager(new LinearLayoutManager(thisFragment.getActivity(), LinearLayoutManager.VERTICAL, false));
                 lista.invalidate();
-            } else {
+            } else { 
             }
         });
     }
