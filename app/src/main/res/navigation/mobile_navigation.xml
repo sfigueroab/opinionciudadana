@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/nav_example"
-        android:name="com.clase.ejemplo.fragments.ExampleFragment"
+        android:name="com.com.ejemplo.fragments.ExampleFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_example" />
 
     <fragment
         android:id="@+id/nav_list"
-        android:name="com.clase.ejemplo.fragments.ListFragment"
+        android:name="com.com.ejemplo.fragments.ListFragment"
         android:label="Encuestas"
         tools:layout="@layout/frament_list" />
 </navigation>

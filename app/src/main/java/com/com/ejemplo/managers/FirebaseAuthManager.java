@@ -1,8 +1,8 @@
-package com.clase.ejemplo.managers;
+package com.com.ejemplo.managers;
 
 import android.app.Activity;
 
-import com.clase.ejemplo.model.User;
+import com.com.ejemplo.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;

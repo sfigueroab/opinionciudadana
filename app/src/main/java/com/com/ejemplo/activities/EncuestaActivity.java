@@ -1,14 +1,9 @@
-package com.clase.ejemplo.fragments;
+package com.com.ejemplo.activities;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -19,109 +14,85 @@ import com.anychart.chart.common.listener.ListenersInterface;
 import com.anychart.charts.Pie;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
-import com.clase.ejemplo.R;
-import com.clase.ejemplo.managers.FirestoreManager;
-import com.clase.ejemplo.model.Encuesta;
-import com.clase.ejemplo.model.Example;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.com.ejemplo.R;
+import com.com.ejemplo.model.Encuesta;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExampleFragment extends DefaultFragment {
-    TextView exampleText;
+public class EncuestaActivity extends DefaultActivity {
+
     private AnyChartView chart;
     private Button yes;
     private Button no;
+    private String key;
 
     private Pie pie;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-        loadExampleTexts();
-        getEncuestas();
-        return root;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        key = getIntent().getStringExtra("key");
+
+        getEncuesta();
     }
 
     @Override
-    public View setFragmentLayout(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_example, container, false);
+    void setLayout() {
+        setContentView(R.layout.activity_encuesta);
     }
 
     @Override
-    public void createViewItems(View root) {
-        exampleText = root.findViewById(R.id.example);
-        chart = root.findViewById(R.id.any_chart_view);
-        yes = root.findViewById(R.id.si);
+    public void createViews() {
+        super.createViews();
+        chart = findViewById(R.id.any_chart_view);
+        yes = findViewById(R.id.si);
         yes.setOnClickListener(view -> sendYes(view));
-        no = root.findViewById(R.id.no);
+        no = findViewById(R.id.no);
         no.setOnClickListener(view -> sendNo(view));
     }
 
-    public void loadExampleTexts() {
-        firestoreManager.getDocument(
-                FirestoreManager.FS_COLLECTION_EXAMPLE,
-                FirestoreManager.FS_DOCUMENT_EXAMPLE,
-                documentSnapshot -> {
-                    if(!documentSnapshot.isSuccessful()) {
-                        exampleText.setText("---");
-                        return;
-                    }
-                    Example object = documentSnapshot.getResult().toObject(Example.class);
-                    exampleText.setText(object.getExampleField());
-                });
-    }
-
-    public void getEncuestas() {
-        firestoreManager.getCollection("encuestas", queryDocumentSnapshots -> {
+    public void getEncuesta() {
+        firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
-                List<DocumentSnapshot> encuestas = queryDocumentSnapshots.getResult().getDocuments();
-                DocumentSnapshot encuesta = encuestas.get(1);
+                DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
                 createChart(miEncuesta);
-                exampleText.setText("Éxito");
             } else {
-                exampleText.setText("Error");
             }
         });
     }
 
     public void sendYes(View view) {
-        firestoreManager.getDocument("encuestas", "encuesta1", queryDocumentSnapshots -> {
+        firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
                 int respuestasActuales = miEncuesta.getRespuestas().get(0);
                 respuestasActuales++;
                 miEncuesta.getRespuestas().set(0, respuestasActuales);
-                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getRespuestas(), task -> {
+                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getRespuestas(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
-                exampleText.setText("Éxito");
-            } else {
-                exampleText.setText("Error");
             }
         });
     }
 
     public void sendNo(View view) {
-        firestoreManager.getDocument("encuestas", "encuesta1", queryDocumentSnapshots -> {
+        firestoreManager.getDocument("encuestas", key, queryDocumentSnapshots -> {
             if(queryDocumentSnapshots.isSuccessful()) {
                 DocumentSnapshot encuesta = queryDocumentSnapshots.getResult();
                 Encuesta miEncuesta = encuesta.toObject(Encuesta.class);
                 int respuestasActuales = miEncuesta.getRespuestas().get(1);
                 respuestasActuales++;
                 miEncuesta.getRespuestas().set(1, respuestasActuales);
-                firestoreManager.setField("encuestas", "encuesta1", "respuestas", miEncuesta.getRespuestas(), task -> {
+                firestoreManager.setField("encuestas", key, "respuestas", miEncuesta.getRespuestas(), task -> {
                     addData(miEncuesta);
                     chart.refreshDrawableState();
                 });
-                exampleText.setText("Éxito");
-            } else {
-                exampleText.setText("Error");
             }
         });
     }
@@ -132,7 +103,7 @@ public class ExampleFragment extends DefaultFragment {
         pie.setOnClickListener(new ListenersInterface.OnClickListener(new String[]{"x", "value"}) {
             @Override
             public void onClick(Event event) {
-                Toast.makeText(thisFragment.getActivity(), event.getData().get("x") + ":" + event.getData().get("value"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(thisActivity, event.getData().get("x") + ":" + event.getData().get("value"), Toast.LENGTH_SHORT).show();
             }
         });
 

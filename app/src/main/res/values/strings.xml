@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Ejemplo</string>
+    <string name="app_name" translatable="false">Opinion Ciudadana</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>

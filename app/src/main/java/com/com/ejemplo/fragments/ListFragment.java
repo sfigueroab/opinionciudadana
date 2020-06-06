@@ -1,4 +1,4 @@
-package com.clase.ejemplo.fragments;
+package com.com.ejemplo.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.clase.ejemplo.R;
-import com.clase.ejemplo.activities.EncuestaActivity;
-import com.clase.ejemplo.adapters.EncuestasAdapter;
-import com.clase.ejemplo.model.Encuesta;
+import com.com.ejemplo.R;
+import com.com.ejemplo.activities.EncuestaActivity;
+import com.com.ejemplo.adapters.EncuestasAdapter;
+import com.com.ejemplo.model.Encuesta;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;

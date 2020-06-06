@@ -1,4 +1,4 @@
-package com.clase.ejemplo.model;
+package com.com.ejemplo.model;
 
 import com.google.firebase.firestore.PropertyName;
 

@@ -1,10 +1,10 @@
-package com.clase.ejemplo.activities;
+package com.com.ejemplo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.clase.ejemplo.managers.SharedPreferencesManager;
-import com.clase.ejemplo.model.User;
+import com.com.ejemplo.managers.SharedPreferencesManager;
+import com.com.ejemplo.model.User;
 
 public class SplashActivity extends DefaultActivity {
 

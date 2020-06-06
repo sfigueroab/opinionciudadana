@@ -1,4 +1,4 @@
-package com.clase.ejemplo.activities;
+package com.com.ejemplo.activities;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.clase.ejemplo.R;
+import com.com.ejemplo.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class CreateAccountActivity extends DefaultActivity {

@@ -1,4 +1,4 @@
-package com.clase.ejemplo.managers;
+package com.com.ejemplo.managers;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
